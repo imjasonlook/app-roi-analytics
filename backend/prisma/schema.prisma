@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model RoiRecord {
+  id            Int      @id @default(autoincrement())
+  date          DateTime
+  app           String
+  channel       String    @default("Apple")
+  bidType       String    @default("CPI")
+  country       String
+  installs      Int
+
+  roi_d0        Float     @default(0)
+  roi_d1        Float     @default(0)
+  roi_d3        Float     @default(0)
+  roi_d7        Float     @default(0)
+  roi_d14       Float     @default(0)
+  roi_d30       Float     @default(0)
+  roi_d60       Float     @default(0)
+  roi_d90       Float     @default(0)
+
+  is_zero_real_d0   Boolean @default(false)
+  is_zero_real_d1   Boolean @default(false)
+  is_zero_real_d3   Boolean @default(false)
+  is_zero_real_d7   Boolean @default(false)
+  is_zero_real_d14  Boolean @default(false)
+  is_zero_real_d30  Boolean @default(false)
+  is_zero_real_d60  Boolean @default(false)
+  is_zero_real_d90  Boolean @default(false)
+
+  is_zero_insufficient_d0   Boolean @default(false)
+  is_zero_insufficient_d1   Boolean @default(false)
+  is_zero_insufficient_d3   Boolean @default(false)
+  is_zero_insufficient_d7   Boolean @default(false)
+  is_zero_insufficient_d14  Boolean @default(false)
+  is_zero_insufficient_d30  Boolean @default(false)
+  is_zero_insufficient_d60  Boolean @default(false)
+  is_zero_insufficient_d90  Boolean @default(false)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([date, app, country, bidType, channel])
+  @@index([app])
+  @@index([country])
+}

@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:8.0
+    container_name: roi-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app_roi
+    ports: ["3306:3306"]
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  backend:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    environment:
+      DATABASE_URL: "mysql://root:root@db:3306/app_roi"
+      PORT: "4000"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports: ["4000:4000"]
+    command: bash -lc "npm i && npm run prisma:generate && npm run prisma:migrate && npm run dev"
+
+  frontend:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    environment:
+      NEXT_PUBLIC_BACKEND: "http://localhost:4000"
+    depends_on:
+      - backend
+    ports: ["3000:3000"]
+    command: bash -lc "npm i && npm run dev"
