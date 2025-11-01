@@ -27,17 +27,6 @@ npm i
 npm run dev
 ```
 
-### 导入数据（CSV）
-```bash
-# 上传文件
-curl -F "file=@/path/to/app_roi_data.csv" http://localhost:4000/api/import/upload
-
-# 或：服务器路径
-curl -X POST http://localhost:4000/api/import/path \
-  -H 'Content-Type: application/json' \
-  -d '{"filePath":"/data/app_roi_data.csv"}'
-```
-
 ### 访问
 - 前端：http://localhost:3000
 - 后端：http://localhost:4000
