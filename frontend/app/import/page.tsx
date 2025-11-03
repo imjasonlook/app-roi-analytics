@@ -77,7 +77,7 @@ export default function ImportPage() {
         setProgress((p) => (p < 88 ? p + 6 : p));
       }, 150);
 
-      const r = await fetch(`${BASE}/api/import/upload`, { method: "POST", body: fd });
+      const r = await fetch(`${BASE}/import/upload`, { method: "POST", body: fd });
       const j = await r.json().catch(() => ({}));
 
       clearInterval(fake);
